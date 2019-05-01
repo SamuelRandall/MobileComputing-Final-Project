@@ -1,16 +1,16 @@
 //
-//  AddLocationViewController.swift
-//  nrk522_assignment4
+//  HourlyTableViewController.swift
+//  FinalProject
 //
-//  Created by Noah Keller on 4/26/19.
-//  Copyright © 2019 Noah Keller. All rights reserved.
+//  Created by Noah Keller on 4/29/19.
+//  Copyright © 2019 Mobile Computing. All rights reserved.
 //
 
 import Foundation
 import UIKit
 import CoreData
 
-class AddLocationViewController: UIViewController {
+class HourlyTableViewController: UIViewController {
     
     @IBOutlet weak var tableVeiw: UITableView!
     var currentLocation = CurrentLocation()
@@ -86,7 +86,7 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return locations.count
     }
@@ -132,7 +132,7 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource{
         
     }
     
-
+    
 }
 
 extension AddLocationViewController: nameWeatherDataProtocol{

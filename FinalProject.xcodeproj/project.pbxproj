@@ -12,6 +12,7 @@
 		F31BB7D72273A4CD00486105 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BB7D52273A4CD00486105 /* Location+CoreDataProperties.swift */; };
 		F31BB7DA2273C52800486105 /* CurrentLocation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BB7D82273C52800486105 /* CurrentLocation+CoreDataClass.swift */; };
 		F31BB7DB2273C52800486105 /* CurrentLocation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BB7D92273C52800486105 /* CurrentLocation+CoreDataProperties.swift */; };
+		F3B2B95322790FF70036D630 /* HourlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B2B95222790FF70036D630 /* HourlyCell.swift */; };
 		F3C0959D22738B380076493B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C0959C22738B380076493B /* AppDelegate.swift */; };
 		F3C0959F22738B380076493B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C0959E22738B380076493B /* ViewController.swift */; };
 		F3C095A222738B380076493B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3C095A022738B380076493B /* Main.storyboard */; };
@@ -21,6 +22,8 @@
 		F3C095B2227397100076493B /* AddLocationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C095B1227397100076493B /* AddLocationVC.swift */; };
 		F3C095B4227397460076493B /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C095B3227397460076493B /* WeatherData.swift */; };
 		F3C095B622739C840076493B /* PersistanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C095B522739C840076493B /* PersistanceService.swift */; };
+		F3C54A032277D83A009D9BC6 /* HourlyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C54A022277D83A009D9BC6 /* HourlyVC.swift */; };
+		F3C54A052277EA20009D9BC6 /* Hour.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C54A042277EA20009D9BC6 /* Hour.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,7 @@
 		F31BB7D52273A4CD00486105 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F31BB7D82273C52800486105 /* CurrentLocation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentLocation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		F31BB7D92273C52800486105 /* CurrentLocation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentLocation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		F3B2B95222790FF70036D630 /* HourlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCell.swift; sourceTree = "<group>"; };
 		F3C0959922738B380076493B /* FinalProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C0959C22738B380076493B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F3C0959E22738B380076493B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -40,6 +44,8 @@
 		F3C095B1227397100076493B /* AddLocationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationVC.swift; sourceTree = "<group>"; };
 		F3C095B3227397460076493B /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		F3C095B522739C840076493B /* PersistanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceService.swift; sourceTree = "<group>"; };
+		F3C54A022277D83A009D9BC6 /* HourlyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyVC.swift; sourceTree = "<group>"; };
+		F3C54A042277EA20009D9BC6 /* Hour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hour.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F35880F2227780C400D6B760 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				F3C095B522739C840076493B /* PersistanceService.swift */,
+				F31BB7D52273A4CD00486105 /* Location+CoreDataProperties.swift */,
+				F31BB7D42273A4CD00486105 /* Location+CoreDataClass.swift */,
+				F31BB7D92273C52800486105 /* CurrentLocation+CoreDataProperties.swift */,
+				F31BB7D82273C52800486105 /* CurrentLocation+CoreDataClass.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		F35880F3227780F100D6B760 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F3C095B1227397100076493B /* AddLocationVC.swift */,
+				62B956B92273ED880089A75E /* MapViewController.swift */,
+				F3C0959E22738B380076493B /* ViewController.swift */,
+				F3C54A022277D83A009D9BC6 /* HourlyVC.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F35880F42277812C00D6B760 /* CustomClasses */ = {
+			isa = PBXGroup;
+			children = (
+				F3C095B3227397460076493B /* WeatherData.swift */,
+				F3C54A042277EA20009D9BC6 /* Hour.swift */,
+				F3B2B95222790FF70036D630 /* HourlyCell.swift */,
+			);
+			path = CustomClasses;
+			sourceTree = "<group>";
+		};
 		F3C0959022738B380076493B = {
 			isa = PBXGroup;
 			children = (
@@ -72,17 +111,11 @@
 		F3C0959B22738B380076493B /* FinalProject */ = {
 			isa = PBXGroup;
 			children = (
-				F31BB7D82273C52800486105 /* CurrentLocation+CoreDataClass.swift */,
-				F31BB7D92273C52800486105 /* CurrentLocation+CoreDataProperties.swift */,
-				F31BB7D42273A4CD00486105 /* Location+CoreDataClass.swift */,
-				62B956B92273ED880089A75E /* MapViewController.swift */,
-				F31BB7D52273A4CD00486105 /* Location+CoreDataProperties.swift */,
 				F3C0959C22738B380076493B /* AppDelegate.swift */,
-				F3C0959E22738B380076493B /* ViewController.swift */,
-				F3C095B1227397100076493B /* AddLocationVC.swift */,
-				F3C095B3227397460076493B /* WeatherData.swift */,
+				F35880F42277812C00D6B760 /* CustomClasses */,
+				F35880F2227780C400D6B760 /* CoreData */,
+				F35880F3227780F100D6B760 /* Views */,
 				F3C095A022738B380076493B /* Main.storyboard */,
-				F3C095B522739C840076493B /* PersistanceService.swift */,
 				F3C095A622738B390076493B /* Assets.xcassets */,
 				F3C095A822738B390076493B /* LaunchScreen.storyboard */,
 				F3C095AB22738B390076493B /* Info.plist */,
@@ -163,8 +196,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				62B956BA2273ED880089A75E /* MapViewController.swift in Sources */,
+				F3C54A032277D83A009D9BC6 /* HourlyVC.swift in Sources */,
 				F31BB7D72273A4CD00486105 /* Location+CoreDataProperties.swift in Sources */,
 				F31BB7D62273A4CD00486105 /* Location+CoreDataClass.swift in Sources */,
+				F3B2B95322790FF70036D630 /* HourlyCell.swift in Sources */,
 				F3C0959F22738B380076493B /* ViewController.swift in Sources */,
 				F3C095B622739C840076493B /* PersistanceService.swift in Sources */,
 				F31BB7DB2273C52800486105 /* CurrentLocation+CoreDataProperties.swift in Sources */,
@@ -172,6 +207,7 @@
 				F3C095B2227397100076493B /* AddLocationVC.swift in Sources */,
 				F3C0959D22738B380076493B /* AppDelegate.swift in Sources */,
 				F3C095A522738B380076493B /* FinalProject.xcdatamodeld in Sources */,
+				F3C54A052277EA20009D9BC6 /* Hour.swift in Sources */,
 				F31BB7DA2273C52800486105 /* CurrentLocation+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

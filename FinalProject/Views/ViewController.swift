@@ -11,6 +11,7 @@ import CoreData
 class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProtocol {
     
     // Properties:
+    @IBOutlet weak var weatherLabel: UILabel!
     @IBOutlet weak var WImage: UIImageView!
     @IBOutlet weak var temp: UILabel!
     @IBOutlet weak var clouds: UILabel!
@@ -30,7 +31,6 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
         let fetchCurrentLocation: NSFetchRequest<CurrentLocation> = CurrentLocation.fetchRequest()
         do {
             let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
-            print(curr)
             if (curr.count == 0){
                 let current = CurrentLocation(context: PersistanceService.context)
                 current.cityState = "Austin,Tx"
@@ -45,13 +45,27 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
         }
         
         self.dataSession.delegate = self
-        dataSession.getData(city: "austin", state: "tx")
+        
+        let city_State = currentLocation.cityState!.split(separator: ",")
+        dataSession.getData(city: String(city_State[0]), state: String(city_State[1]))
+        
+        weatherLabel.text =  "Weather conditions for " + currentLocation.cityState!
     }
     
     
     // functions:
-    func responseDataHandler(data: NSArray, city: String, state: String){
-        guard let DICT = data[0] as? NSDictionary else{
+    func responseDataHandler(jsonResult: NSDictionary, city: String, state: String){
+        guard let DATA = jsonResult["data"] as? [String: Any] else{
+            print("Data not found")
+            responseError()
+            return
+        }
+        guard let CurrentConditions = DATA["current_condition"] as? NSArray else{
+            print("CurrentConditions not found")
+            responseError()
+            return
+        }
+        guard let DICT = CurrentConditions[0] as? NSDictionary else{
             print("Dictionary not found")
             return
         }
@@ -117,8 +131,8 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
             self.pressure.isHidden = false
             self.rain.isHidden = false
             self.wind.isHidden = false
-            
             self.WImage.isHidden = false
+            self.weatherLabel.isHidden = false
             
             self.temp.text = TempC + "°C/" + TempF + "°F"
             self.clouds.text = self.replaceData(original: self.clouds.text!, data: Cloud + "%")
@@ -143,6 +157,12 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
             self.rain.isHidden = true
             self.wind.isHidden = true
             self.WImage.isHidden = true
+            self.weatherLabel.isHidden = true
+            
+            let alert = UIAlertController(title: "Network Error", message: "Check your internet connection and try again", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     

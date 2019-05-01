@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol nameWeatherDataProtocol {
-    func responseDataHandler(data: NSArray, city: String, state: String)
+    func responseDataHandler(jsonResult: NSDictionary, city: String, state: String)
     func responseError()
 }
 
@@ -26,7 +26,7 @@ class WeatherData {
     func getData(city: String, state: String){
         
         let cityState = formatText(text: city) + "," + formatText(text: state)
-        var dataArray: NSArray?
+        var dataDict: NSDictionary?
         let url = URL(string: "https://api.worldweatheronline.com/premium/v1/weather.ashx?key=236178e1d71f4f14a5f174145190504&format=json&q=" + cityState)!
         let task = session.dataTask(with: url) { data, response, error in
             if error != nil || data == nil {
@@ -47,18 +47,8 @@ class WeatherData {
             do {
                 let jsonResult = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary
                 if jsonResult != nil {
-                    guard let Data = jsonResult!["data"] as? [String: Any] else{
-                        print("Data not found")
-                        self.delegate?.responseError()
-                        return
-                    }
-                    guard let CurrentConditions = Data["current_condition"] as? NSArray else{
-                        print("CurrentConditions not found")
-                        self.delegate?.responseError()
-                        return
-                    }
-                    dataArray = CurrentConditions
-                    self.delegate?.responseDataHandler(data: dataArray!, city: city, state: state)
+                    dataDict = jsonResult
+                    self.delegate?.responseDataHandler(jsonResult: dataDict!, city: city, state: state)
                 }
             }
             catch {
