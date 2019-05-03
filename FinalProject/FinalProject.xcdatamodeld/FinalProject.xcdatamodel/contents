@@ -6,8 +6,12 @@
     <entity name="Location" representedClassName="Location" syncable="YES">
         <attribute name="cityState" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="MeasurementSystem" representedClassName="MeasurementSystem" syncable="YES">
+        <attribute name="system" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Location" positionX="-63" positionY="-18" width="128" height="60"/>
         <element name="CurrentLocation" positionX="-54" positionY="0" width="128" height="60"/>
+        <element name="Location" positionX="-63" positionY="-18" width="128" height="60"/>
+        <element name="MeasurementSystem" positionX="-54" positionY="0" width="128" height="60"/>
     </elements>
 </model>

@@ -18,8 +18,11 @@ class Hour {
     var time: String
     var Image: String
     var winddir16Point: String
+    var cloudCover: String
+    var feelsLikeF: String
+    var feelsLikeC: String
     
-    init(tempC: String, tempF: String, windspeedKmph:String, windspeedMiles: String, chanceofrain: String, humidity: String, time: String, Image: String, winddir16Point: String) {
+    init(tempC: String, tempF: String, windspeedKmph:String, windspeedMiles: String, chanceofrain: String, humidity: String, time: String, Image: String, winddir16Point: String, cloudCover: String, feelsLikeF: String, feelsLikeC: String) {
         self.tempC = tempC
         self.tempF = tempF
         self.windspeedKmph = windspeedKmph
@@ -29,5 +32,8 @@ class Hour {
         self.time = time
         self.Image = Image
         self.winddir16Point = winddir16Point
+        self.cloudCover = cloudCover
+        self.feelsLikeF = feelsLikeF
+        self.feelsLikeC = feelsLikeC
     }
 }

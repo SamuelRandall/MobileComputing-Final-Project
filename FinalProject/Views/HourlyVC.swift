@@ -21,11 +21,24 @@ class HourlyViewController: UIViewController {
     var currentLocation = CurrentLocation()
     var dataSession = WeatherData()
     var hourlyList = [Hour]()
+    
     var expanded:Bool = false
+    var mesurementSystem = MeasurementSystem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // load core data
+        fetchCurrentLocation()
+        fetchMesurementSystem()
+        
+        // get data from rest service
         self.dataSession.delegate = self
+        let city_State = currentLocation.cityState!.split(separator: ",")
+        dataSession.getData(city: String(city_State[0]), state: String(city_State[1]))
+        
+    }
+    func fetchCurrentLocation(){
         let fetchCurrentLocation: NSFetchRequest<CurrentLocation> = CurrentLocation.fetchRequest()
         do {
             let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
@@ -42,10 +55,27 @@ class HourlyViewController: UIViewController {
         catch {
             print("catch block for CurrentLocation coreData fetchRequest AddLocationViewController")
         }
-        
-        let city_State = currentLocation.cityState!.split(separator: ",")
-        dataSession.getData(city: String(city_State[0]), state: String(city_State[1]))
-        
+    }
+    func fetchMesurementSystem(){
+        let fetchMeasurementFeature: NSFetchRequest<MeasurementSystem> = MeasurementSystem.fetchRequest()
+        do {
+            let mesurementSystem = try PersistanceService.context.fetch(fetchMeasurementFeature)
+            if (mesurementSystem.count == 0){
+                self.mesurementSystem = MeasurementSystem(context: PersistanceService.context)
+                self.mesurementSystem.system = true
+            }else{
+                self.mesurementSystem = mesurementSystem[0]
+            }
+        }
+        catch {
+            print("catch block for MeasurementSystem coreData fetchRequest ViewController")
+        }
+    }
+    
+    @IBAction func measurementToggle(_ sender: UIBarButtonItem) {
+        self.mesurementSystem.system = !self.mesurementSystem.system
+        PersistanceService.saveContext()
+        self.tableVeiw.reloadData()
     }
     
 }
@@ -63,14 +93,24 @@ extension HourlyViewController: UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "HourlyCell", for: indexPath) as! HourlyCell
         let hour = hourlyList[indexPath.row]
         
-        cell.tempLabel.text = hour.tempC + "°C/" + hour.tempF + "°F"
+        if (mesurementSystem.system){
+            cell.tempLabel.text = hour.tempF + "°F"
+            cell.feelsLikeLabel.text = hour.feelsLikeF + "°F"
+            cell.windDirLabel.text = hour.winddir16Point + " " + hour.windspeedMiles + " mph"
+        }else{
+            cell.tempLabel.text = hour.tempC + "°C"
+            cell.feelsLikeLabel.text = hour.feelsLikeC + "°C"
+            cell.windDirLabel.text = hour.winddir16Point + " " + hour.windspeedKmph + " Kmph"
+        }
+    
         if let imageData = try? Data(contentsOf: URL(string: hour.Image)!) {
             cell.img.image = UIImage(data: imageData)!
         }
+        cell.cloudCoverLabel.text = hour.cloudCover + "%"
         cell.humidityLabel.text = hour.humidity + "%"
-        cell.windSpeedLabel.text = hour.windspeedKmph + "Kmph/" + hour.windspeedMiles + "mph"
-        cell.windDirLabel.text = hour.winddir16Point
         cell.rainChanceLabel.text = hour.chanceofrain + "%"
+
+        cell.time.text = getTime(add: Int(hour.time)!/100)
         return cell
     }
     
@@ -90,6 +130,19 @@ extension HourlyViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.expanded = !self.expanded
         self.tableVeiw.reloadData()
+    }
+    
+    func getTime(add: Int)->String {
+        // get current hour
+        
+        let calendar = NSCalendar.current
+        let currentHour = calendar.component(.hour,from: NSDate() as Date)
+        let HOUR = (currentHour + add + 3) % 24
+        if (HOUR < 12){
+            return HOUR == 0 ? "12 AM" : String(HOUR) + " AM"
+        }else{
+            return HOUR == 12 ? "12 PM" : String((HOUR)-12) + " PM"
+        }
     }
     
     
@@ -182,6 +235,21 @@ extension HourlyViewController: nameWeatherDataProtocol{
             responseError()
             return
         }
+        guard let CC = element["cloudcover"] as? String else{
+            print("cloudcover not found")
+            responseError()
+            return
+        }
+        guard let FLF = element["FeelsLikeF"] as? String else{
+            print("FeelsLikeF not found")
+            responseError()
+            return
+        }
+        guard let FLC = element["FeelsLikeC"] as? String else{
+            print("FeelsLikeC not found")
+            responseError()
+            return
+        }
         guard let ImageArray = element["weatherIconUrl"] as? NSArray else{
             print("weatherIconUrl not found")
             return
@@ -195,7 +263,7 @@ extension HourlyViewController: nameWeatherDataProtocol{
             return
         }
         
-        let hour = Hour(tempC: TC, tempF: TF, windspeedKmph: WSK, windspeedMiles: WSM, chanceofrain: RP, humidity: H, time: T, Image: I, winddir16Point: WD)
+        let hour = Hour(tempC: TC, tempF: TF, windspeedKmph: WSK, windspeedMiles: WSM, chanceofrain: RP, humidity: H, time: T, Image: I, winddir16Point: WD, cloudCover: CC, feelsLikeF: FLF ,feelsLikeC: FLC)
         hourlyList.append(hour)
     }
 }

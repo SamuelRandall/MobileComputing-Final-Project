@@ -20,46 +20,22 @@ class AddLocationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dataSession.delegate = self
-        let fetchLocatioins: NSFetchRequest<Location> = Location.fetchRequest()
-        do {
-            let locs = try PersistanceService.context.fetch(fetchLocatioins)
-            self.locations = locs
-            self.tableVeiw.reloadData()
-        }
-        catch {
-            print("catch block for Location coreData fetchRequest AddLocationViewController")
-        }
-        let fetchCurrentLocation: NSFetchRequest<CurrentLocation> = CurrentLocation.fetchRequest()
-        do {
-            let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
-            if (curr.count == 0){
-                let current = CurrentLocation(context: PersistanceService.context)
-                current.cityState = "Austin,Tx"
-                PersistanceService.saveContext()
-                self.currentLocation = current
-            }else {
-                self.currentLocation = curr[0]
-            }
-            self.tableVeiw.reloadData()
-        }
-        catch {
-            print("catch block for CurrentLocation coreData fetchRequest AddLocationViewController")
-        }
+        
+        fetchCurrentLocation()
+        fetchLocations()
+        
     }
     
     
     @IBAction func addLocation(_ sender: UIButton) {
-        print("button Pressed")
-        addLocationPopUp()
-    }
-    
-    func addLocationPopUp(){
         let alert = UIAlertController(title: "Add Location", message: nil, preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = "City"
+            textField.autocorrectionType = .yes
         }
         alert.addTextField { (textField) in
             textField.placeholder = "State"
+            textField.autocorrectionType = .yes
         }
         
         let action = UIAlertAction(title: "Submit", style: .default){ (_) in
@@ -79,6 +55,37 @@ class AddLocationViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func fetchLocations() {
+        let fetchLocatioins: NSFetchRequest<Location> = Location.fetchRequest()
+        do {
+            let locs = try PersistanceService.context.fetch(fetchLocatioins)
+            self.locations = locs
+            self.tableVeiw.reloadData()
+        }
+        catch {
+            print("catch block for Location coreData fetchRequest AddLocationViewController")
+        }
+    }
+    
+    func fetchCurrentLocation(){
+        let fetchCurrentLocation: NSFetchRequest<CurrentLocation> = CurrentLocation.fetchRequest()
+        do {
+            let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
+            if (curr.count == 0){
+                let current = CurrentLocation(context: PersistanceService.context)
+                current.cityState = "Austin,Tx"
+                PersistanceService.saveContext()
+                
+                self.currentLocation = current
+            }else {
+                self.currentLocation = curr[0]
+            }
+        }
+        catch {
+            print("catch block for CurrentLocation coreData fetchRequest ViewController")
+        }
+    }
+    
 }
 
 extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource{
@@ -87,19 +94,24 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource{
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations.count
+        return locations.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        let city = locations[indexPath.row].cityState
-        cell.textLabel?.text = city
-        if (city! == currentLocation.cityState!){
-            cell.accessoryType = .checkmark
-            cell.isSelected = true
-        }else {
-            cell.accessoryType = .none
-            cell.isSelected = false
+        if (indexPath.row == 0){
+            let city = currentLocation.cityState
+            cell.textLabel?.text = city
+        }else{
+            let city = locations[indexPath.row-1].cityState
+            cell.textLabel?.text = city
+            if (city! == currentLocation.cityState!){
+                cell.accessoryType = .checkmark
+                cell.isSelected = true
+            }else {
+                cell.accessoryType = .none
+                cell.isSelected = false
+            }
         }
         return cell
     }
@@ -122,7 +134,8 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.accessoryType = .checkmark
-            currentLocation.cityState = locations[indexPath.row].cityState
+            currentLocation.cityState = (indexPath.row == 0) ? currentLocation.cityState : locations[indexPath.row-1].cityState
+//            currentLocation.cityState = (indexPath.row == 0) ? GPSLOCATION(zip or city,state) : locations[indexPath.row-1].cityState
             PersistanceService.saveContext()
             tableView.reloadData()
         }

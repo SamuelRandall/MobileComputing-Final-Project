@@ -8,10 +8,9 @@
 
 import UIKit
 import CoreData
-class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProtocol {
+class ViewController: UIViewController {
     
     // Properties:
-    @IBOutlet weak var weatherLabel: UILabel!
     @IBOutlet weak var WImage: UIImageView!
     @IBOutlet weak var temp: UILabel!
     @IBOutlet weak var clouds: UILabel!
@@ -20,14 +19,27 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
     @IBOutlet weak var rain: UILabel!
     @IBOutlet weak var wind: UILabel!
     
+    @IBOutlet weak var WeatherStackView: UIStackView!
+    @IBOutlet weak var TitleBar: UINavigationItem!
+    
     var dataSession = WeatherData()
     var currentLocation = CurrentLocation()
+    var mesurementSystem = MeasurementSystem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        //        nameTextField.delegate = self
-        //        cityTextField.delegate = self
+        
+        fetchCurrentLocation()
+        fetchMesurementSystem()
+
+        self.dataSession.delegate = self
+        let city_State = currentLocation.cityState!.split(separator: ",")
+        dataSession.getData(city: String(city_State[0]), state: String(city_State[1]))
+        
+        TitleBar.title = currentLocation.cityState!
+    }
+    
+    func fetchCurrentLocation(){
         let fetchCurrentLocation: NSFetchRequest<CurrentLocation> = CurrentLocation.fetchRequest()
         do {
             let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
@@ -41,18 +53,34 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
             }
         }
         catch {
-            print("catch block for CurrentLocation coreData fetchRequest AddLocationViewController")
+            print("catch block for CurrentLocation coreData fetchRequest ViewController")
         }
-        
-        self.dataSession.delegate = self
-        
-        let city_State = currentLocation.cityState!.split(separator: ",")
-        dataSession.getData(city: String(city_State[0]), state: String(city_State[1]))
-        
-        weatherLabel.text =  "Weather conditions for " + currentLocation.cityState!
     }
     
+    func fetchMesurementSystem(){
+        let fetchMeasurementFeature: NSFetchRequest<MeasurementSystem> = MeasurementSystem.fetchRequest()
+        do {
+            let mesurementSystem = try PersistanceService.context.fetch(fetchMeasurementFeature)
+            if (mesurementSystem.count == 0){
+                self.mesurementSystem = MeasurementSystem(context: PersistanceService.context)
+                self.mesurementSystem.system = true
+            }else{
+                self.mesurementSystem = mesurementSystem[0]
+            }
+        }
+        catch {
+            print("catch block for MeasurementSystem coreData fetchRequest ViewController")
+        }
+    }
+    @IBAction func SystemToggleButton(_ sender: Any) {
+        self.mesurementSystem.system = !self.mesurementSystem.system
+        PersistanceService.saveContext()
+        
+        self.viewDidLoad()
+    }
     
+}
+extension ViewController: nameWeatherDataProtocol {
     // functions:
     func responseDataHandler(jsonResult: NSDictionary, city: String, state: String){
         guard let DATA = jsonResult["data"] as? [String: Any] else{
@@ -97,10 +125,6 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
             print("winddir16Point not found")
             return
         }
-        guard let WindDegree = DICT["winddirDegree"] as? String else{
-            print("winddirDegree not found")
-            return
-        }
         guard let WindSpeedK = DICT["windspeedKmph"] as? String else{
             print("windspeedKmph not found")
             return
@@ -109,8 +133,6 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
             print("windspeedMiles not found")
             return
         }
-        let Wind = WindSpeedK + "kmph/" + WindSpeedM + "mph " + WindDirection + "(" + WindDegree + "°)"
-        
         guard let ImageArray = DICT["weatherIconUrl"] as? NSArray else{
             print("weatherIconUrl not found")
             return
@@ -123,25 +145,34 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
             print("Image not found")
             return
         }
+        print(DICT)
         
         DispatchQueue.main.async() {
             self.temp.isHidden = false
-            self.clouds.isHidden = false
-            self.humidity.isHidden = false
-            self.pressure.isHidden = false
-            self.rain.isHidden = false
-            self.wind.isHidden = false
+            self.WeatherStackView.isHidden = false
             self.WImage.isHidden = false
-            self.weatherLabel.isHidden = false
+            //self.twirl.isHidden = true
             
-            self.temp.text = TempC + "°C/" + TempF + "°F"
-            self.clouds.text = self.replaceData(original: self.clouds.text!, data: Cloud + "%")
-            self.humidity.text = self.replaceData(original: self.humidity.text!, data: Humidity + "%")
-            self.pressure.text = self.replaceData(original: self.pressure.text!, data: Pressure + "mbar")
-            self.rain.text = self.replaceData(original: self.rain.text!, data: Prec + "mm")
-            self.wind.text = self.replaceData(original: self.wind.text!, data: Wind)
+            if (self.mesurementSystem.system){
+                self.temp.text = TempF + "°F"
+                self.wind.text = WindDirection + " " + WindSpeedM + " mph"
+                let inches = Float(Int(Float(Prec)!*(0.0393701)*100))/100
+                self.rain.text = String(inches) + " in"
+            }else{
+                self.temp.text = TempC + "°C"
+                self.wind.text = WindDirection + " " + WindSpeedK + " Kmph"
+                self.rain.text = Prec + " mm"
+            }
+            
+            self.clouds.text = Cloud + "%"
+            self.humidity.text = Humidity + "%"
+            self.pressure.text = Pressure + "mbar"
+            
+            
             if let imageData = try? Data(contentsOf: URL(string: Image)!) {
                 self.WImage.image = UIImage(data: imageData)
+//                number = someFucntion(Image)
+//                self.view.backgroundColor = UIColor(patternImage: UIImage(named: dict(number))
             }
             
         }
@@ -151,36 +182,14 @@ class ViewController: UIViewController, UITextFieldDelegate, nameWeatherDataProt
     func responseError(){
         DispatchQueue.main.async() {
             self.temp.isHidden = true
-            self.clouds.isHidden = true
-            self.humidity.isHidden = true
-            self.pressure.isHidden = true
-            self.rain.isHidden = true
-            self.wind.isHidden = true
+            self.WeatherStackView.isHidden = true
             self.WImage.isHidden = true
-            self.weatherLabel.isHidden = true
             
             let alert = UIAlertController(title: "Network Error", message: "Check your internet connection and try again", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default)
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
         }
-    }
-    
-    func replaceData(original: String, data: String) -> String{
-        var str = ""
-        var flag = true
-        for ch in original{
-            if(flag){
-                str += String(ch)
-            }else{
-                break
-            }
-            if (ch == ":"){
-                flag = false
-            }
-        }
-        return str + data
-        
     }
     
 }

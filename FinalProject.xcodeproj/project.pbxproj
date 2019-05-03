@@ -12,6 +12,8 @@
 		F31BB7D72273A4CD00486105 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BB7D52273A4CD00486105 /* Location+CoreDataProperties.swift */; };
 		F31BB7DA2273C52800486105 /* CurrentLocation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BB7D82273C52800486105 /* CurrentLocation+CoreDataClass.swift */; };
 		F31BB7DB2273C52800486105 /* CurrentLocation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BB7D92273C52800486105 /* CurrentLocation+CoreDataProperties.swift */; };
+		F3694DAB227CBDEB008358D2 /* MeasurementSystem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3694DA9227CBDEB008358D2 /* MeasurementSystem+CoreDataClass.swift */; };
+		F3694DAC227CBDEB008358D2 /* MeasurementSystem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3694DAA227CBDEB008358D2 /* MeasurementSystem+CoreDataProperties.swift */; };
 		F3B2B95322790FF70036D630 /* HourlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B2B95222790FF70036D630 /* HourlyCell.swift */; };
 		F3C0959D22738B380076493B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C0959C22738B380076493B /* AppDelegate.swift */; };
 		F3C0959F22738B380076493B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C0959E22738B380076493B /* ViewController.swift */; };
@@ -32,6 +34,8 @@
 		F31BB7D52273A4CD00486105 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F31BB7D82273C52800486105 /* CurrentLocation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentLocation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		F31BB7D92273C52800486105 /* CurrentLocation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentLocation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		F3694DA9227CBDEB008358D2 /* MeasurementSystem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MeasurementSystem+CoreDataClass.swift"; sourceTree = "<group>"; };
+		F3694DAA227CBDEB008358D2 /* MeasurementSystem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MeasurementSystem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F3B2B95222790FF70036D630 /* HourlyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCell.swift; sourceTree = "<group>"; };
 		F3C0959922738B380076493B /* FinalProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3C0959C22738B380076493B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -62,7 +66,8 @@
 		F35880F2227780C400D6B760 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				F3C095B522739C840076493B /* PersistanceService.swift */,
+				F3694DA9227CBDEB008358D2 /* MeasurementSystem+CoreDataClass.swift */,
+				F3694DAA227CBDEB008358D2 /* MeasurementSystem+CoreDataProperties.swift */,
 				F31BB7D52273A4CD00486105 /* Location+CoreDataProperties.swift */,
 				F31BB7D42273A4CD00486105 /* Location+CoreDataClass.swift */,
 				F31BB7D92273C52800486105 /* CurrentLocation+CoreDataProperties.swift */,
@@ -112,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				F3C0959C22738B380076493B /* AppDelegate.swift */,
+				F3C095B522739C840076493B /* PersistanceService.swift */,
 				F35880F42277812C00D6B760 /* CustomClasses */,
 				F35880F2227780C400D6B760 /* CoreData */,
 				F35880F3227780F100D6B760 /* Views */,
@@ -206,7 +212,9 @@
 				F3C095B4227397460076493B /* WeatherData.swift in Sources */,
 				F3C095B2227397100076493B /* AddLocationVC.swift in Sources */,
 				F3C0959D22738B380076493B /* AppDelegate.swift in Sources */,
+				F3694DAC227CBDEB008358D2 /* MeasurementSystem+CoreDataProperties.swift in Sources */,
 				F3C095A522738B380076493B /* FinalProject.xcdatamodeld in Sources */,
+				F3694DAB227CBDEB008358D2 /* MeasurementSystem+CoreDataClass.swift in Sources */,
 				F3C54A052277EA20009D9BC6 /* Hour.swift in Sources */,
 				F31BB7DA2273C52800486105 /* CurrentLocation+CoreDataClass.swift in Sources */,
 			);
