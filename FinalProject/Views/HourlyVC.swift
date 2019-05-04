@@ -43,10 +43,7 @@ class HourlyViewController: UIViewController {
         do {
             let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
             if (curr.count == 0){
-                let current = CurrentLocation(context: PersistanceService.context)
-                current.cityState = "Austin,Tx"
-                PersistanceService.saveContext()
-                self.currentLocation = current
+                print("ERROR no currentLocation found")
             }else {
                 self.currentLocation = curr[0]
             }

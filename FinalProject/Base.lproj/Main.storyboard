@@ -56,7 +56,7 @@
                                     <constraint firstAttribute="width" secondItem="My6-7i-sXw" secondAttribute="height" multiplier="30:31" id="ek7-FX-JL9"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="31°C/87°F" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XZQ-MI-mNZ">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="31°C/87°F" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XZQ-MI-mNZ">
                                 <rect key="frame" x="159" y="260" width="122" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="EHj-S2-8U8"/>

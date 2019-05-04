@@ -36,7 +36,8 @@ class ViewController: UIViewController {
         let city_State = currentLocation.cityState!.split(separator: ",")
         dataSession.getData(city: String(city_State[0]), state: String(city_State[1]))
         
-        TitleBar.title = currentLocation.cityState!
+        let seperate = currentLocation.cityState!.split(separator: ",")
+        TitleBar.title = (seperate[1].contains("USA") || seperate[1].contains("United States of America")) ? seperate[0] + ", USA" : currentLocation.cityState!
     }
     
     func fetchCurrentLocation(){
@@ -45,7 +46,7 @@ class ViewController: UIViewController {
             let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
             if (curr.count == 0){
                 let current = CurrentLocation(context: PersistanceService.context)
-                current.cityState = "Austin,Tx"
+                current.cityState = "Austin, USA"
                 PersistanceService.saveContext()
                 self.currentLocation = current
             }else {
@@ -72,6 +73,7 @@ class ViewController: UIViewController {
             print("catch block for MeasurementSystem coreData fetchRequest ViewController")
         }
     }
+    
     @IBAction func SystemToggleButton(_ sender: Any) {
         self.mesurementSystem.system = !self.mesurementSystem.system
         PersistanceService.saveContext()
@@ -145,7 +147,6 @@ extension ViewController: nameWeatherDataProtocol {
             print("Image not found")
             return
         }
-        print(DICT)
         
         DispatchQueue.main.async() {
             self.temp.isHidden = false
@@ -171,8 +172,9 @@ extension ViewController: nameWeatherDataProtocol {
             
             if let imageData = try? Data(contentsOf: URL(string: Image)!) {
                 self.WImage.image = UIImage(data: imageData)
-//                number = someFucntion(Image)
-//                self.view.backgroundColor = UIColor(patternImage: UIImage(named: dict(number))
+//                let number = self.getPicCode(url:Image)
+//                self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background_" + number)
+//                self.WImage.image = UIImage(named: "icon_" + number)
             }
             
         }
@@ -190,6 +192,12 @@ extension ViewController: nameWeatherDataProtocol {
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func getPicCode(url: String) -> String{
+        let seperateURL = url.split(separator: "/")
+        let seperateLast = seperateURL[seperateURL.count - 1].split(separator: "_")
+        return String(seperateLast[1])
     }
     
 }

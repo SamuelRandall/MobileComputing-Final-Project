@@ -23,7 +23,8 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dataSession.delegate = self
-        
+        fetchLocations()
+        fetchCurrentLocation()
         addMapPins()
         // Do any additional setup after loading the view.
     }
@@ -31,11 +32,11 @@ class MapViewController: UIViewController {
     @IBAction func addLocationButton(_ sender: Any) {
         let alert = UIAlertController(title: "Add Location", message: nil, preferredStyle: .alert)
         alert.addTextField { (textField) in
-            textField.placeholder = "City"
+            textField.placeholder = "City or Postal Code"
             textField.autocorrectionType = .yes
         }
         alert.addTextField { (textField) in
-            textField.placeholder = "State"
+            textField.placeholder = "Country (Optional)"
             textField.autocorrectionType = .yes
         }
         
@@ -44,7 +45,7 @@ class MapViewController: UIViewController {
             let state = alert.textFields!.last!.text!
             
             // call to the API to see if the location exists, if not return error
-            if(city == "" || state == ""){
+            if(city == ""){
                 self.responseError()
                 return
             }else{
@@ -72,10 +73,7 @@ class MapViewController: UIViewController {
         do {
             let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
             if (curr.count == 0){
-                let current = CurrentLocation(context: PersistanceService.context)
-                current.cityState = "Austin,Tx"
-                PersistanceService.saveContext()
-                self.currentLocation = current
+                print("ERROR no currentLocation found")
             }else {
                 self.currentLocation = curr[0]
             }
@@ -90,8 +88,8 @@ class MapViewController: UIViewController {
     }
 }
 extension MapViewController: nameWeatherDataProtocol{
-    func responseDataHandler(jsonResult: NSDictionary, city: String, state: String) {
         
+    func responseDataHandler(jsonResult: NSDictionary, city: String, state: String) {
         guard let DATA = jsonResult["data"] as? [String: Any] else{
             print("Data not found")
             responseError()
@@ -102,16 +100,44 @@ extension MapViewController: nameWeatherDataProtocol{
             responseError()
             return
         }
-        
+        guard let request = DATA["request"] as? NSArray else{
+            print("request not found")
+            responseError()
+            return
+        }
+        guard let requestDict = request[0] as? NSDictionary else{
+            print("requestDict not found")
+            responseError()
+            return
+        }
+        guard let city = requestDict["query"] as? String else{
+            print("city not found")
+            responseError()
+            return
+        }
         if (CurrentConditions.count == 0){
             responseError()
         }
-        DispatchQueue.main.async() {
-            let location = Location(context: PersistanceService.context)
-            location.cityState = city + "," + state
-            PersistanceService.saveContext()
-            self.locations.append(location)
-//            self.viewDidLoad()
+        var flag = true
+        for loc in locations{
+            if (loc.cityState == city) {
+                flag = false
+            }
+        }
+        if (flag){
+            DispatchQueue.main.async() {
+                let location = Location(context: PersistanceService.context)
+                location.cityState = city
+                PersistanceService.saveContext()
+                self.locations.append(location)
+            }
+        }else{
+            DispatchQueue.main.async() {
+                let alert = UIAlertController(title: "Location Error", message: "Location is already in the list", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
     

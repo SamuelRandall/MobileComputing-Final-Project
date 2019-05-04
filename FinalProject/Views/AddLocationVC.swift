@@ -23,36 +23,6 @@ class AddLocationViewController: UIViewController {
         
         fetchCurrentLocation()
         fetchLocations()
-        
-    }
-    
-    
-    @IBAction func addLocation(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Add Location", message: nil, preferredStyle: .alert)
-        alert.addTextField { (textField) in
-            textField.placeholder = "City"
-            textField.autocorrectionType = .yes
-        }
-        alert.addTextField { (textField) in
-            textField.placeholder = "State"
-            textField.autocorrectionType = .yes
-        }
-        
-        let action = UIAlertAction(title: "Submit", style: .default){ (_) in
-            let city = alert.textFields!.first!.text!
-            let state = alert.textFields!.last!.text!
-            
-            // call to the API to see if the location exists, if not return error
-            if(city == "" || state == ""){
-                self.responseError()
-                return
-            }else{
-                self.dataSession.getData(city: city, state: state)
-            }
-            
-        }
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
     }
     
     func fetchLocations() {
@@ -72,11 +42,7 @@ class AddLocationViewController: UIViewController {
         do {
             let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
             if (curr.count == 0){
-                let current = CurrentLocation(context: PersistanceService.context)
-                current.cityState = "Austin,Tx"
-                PersistanceService.saveContext()
-                
-                self.currentLocation = current
+                print("ERROR no currentLocation found")
             }else {
                 self.currentLocation = curr[0]
             }
@@ -84,6 +50,35 @@ class AddLocationViewController: UIViewController {
         catch {
             print("catch block for CurrentLocation coreData fetchRequest ViewController")
         }
+    }
+    
+    
+    @IBAction func addLocation(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Add Location", message: nil, preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "City or Postal Code"
+            textField.autocorrectionType = .yes
+        }
+        alert.addTextField { (textField) in
+            textField.placeholder = "Country (Optional)"
+            textField.autocorrectionType = .yes
+        }
+        
+        let action = UIAlertAction(title: "Submit", style: .default){ (_) in
+            let city = alert.textFields!.first!.text!
+            let state = alert.textFields!.last!.text!
+            
+            // call to the API to see if the location exists, if not return error
+            if(city == ""){
+                self.responseError()
+                return
+            }else{
+                self.dataSession.getData(city: city, state: state)
+            }
+            
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
 }
@@ -149,7 +144,6 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource{
 extension AddLocationViewController: nameWeatherDataProtocol{
     
     func responseDataHandler(jsonResult: NSDictionary, city: String, state: String) {
-        
         guard let DATA = jsonResult["data"] as? [String: Any] else{
             print("Data not found")
             responseError()
@@ -160,16 +154,45 @@ extension AddLocationViewController: nameWeatherDataProtocol{
             responseError()
             return
         }
-        
+        guard let request = DATA["request"] as? NSArray else{
+            print("request not found")
+            responseError()
+            return
+        }
+        guard let requestDict = request[0] as? NSDictionary else{
+            print("requestDict not found")
+            responseError()
+            return
+        }
+        guard let city = requestDict["query"] as? String else{
+            print("city not found")
+            responseError()
+            return
+        }
         if (CurrentConditions.count == 0){
             responseError()
         }
-        DispatchQueue.main.async() {
-            let location = Location(context: PersistanceService.context)
-            location.cityState = city + "," + state
-            PersistanceService.saveContext()
-            self.locations.append(location)
-            self.tableVeiw.reloadData()
+        var flag = true
+        for loc in locations{
+            if (loc.cityState == city) {
+                flag = false
+            }
+        }
+        if (flag){
+            DispatchQueue.main.async() {
+                let location = Location(context: PersistanceService.context)
+                location.cityState = city
+                PersistanceService.saveContext()
+                self.locations.append(location)
+                self.tableVeiw.reloadData()
+            }
+        }else{
+            DispatchQueue.main.async() {
+                let alert = UIAlertController(title: "Location Error", message: "Location is already in the list", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
     
