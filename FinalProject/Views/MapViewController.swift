@@ -20,6 +20,9 @@ class MapViewController: UIViewController {
     
     var dataSession = WeatherData()
     
+    var places = [Place]()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dataSession.delegate = self
@@ -83,10 +86,23 @@ class MapViewController: UIViewController {
         }
     }
     
+    //MARK: - Annotations
+    
     func addMapPins() {
         // loop through list of locations, add pin for each location
+        var name:String? = ""
+        for loc in locations {
+            name = loc.cityState
+            places.append(Place(title:name))
+        }
+        for place in places {
+            place.getLocation(forPlaceCalled: place.title!, completion: { (placeWithDetails) in
+                self.Map.addAnnotation(placeWithDetails)
+            })
+        }
     }
 }
+
 extension MapViewController: nameWeatherDataProtocol{
         
     func responseDataHandler(jsonResult: NSDictionary, city: String, state: String) {
@@ -151,3 +167,4 @@ extension MapViewController: nameWeatherDataProtocol{
         }
     }
 }
+

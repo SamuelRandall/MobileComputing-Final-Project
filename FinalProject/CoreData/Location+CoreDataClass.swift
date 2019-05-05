@@ -7,10 +7,13 @@
 //
 //
 
+import UIKit
 import Foundation
 import CoreData
+import CoreLocation
+import MapKit
 
 @objc(Location)
 public class Location: NSManagedObject {
-
+    
 }
