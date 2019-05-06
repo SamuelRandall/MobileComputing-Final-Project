@@ -53,6 +53,7 @@ class MapViewController: UIViewController {
                 return
             }else{
                 self.dataSession.getData(city: city, state: state)
+                self.viewDidLoad()
             }
             
         }
