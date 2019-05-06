@@ -8,7 +8,10 @@
 
 import UIKit
 import CoreData
-class ViewController: UIViewController {
+import MapKit
+import CoreLocation
+
+class ViewController: UIViewController, CLLocationManagerDelegate {
     
     // Properties:
     @IBOutlet weak var WImage: UIImageView!
@@ -18,9 +21,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var pressure: UILabel!
     @IBOutlet weak var rain: UILabel!
     @IBOutlet weak var wind: UILabel!
+    @IBOutlet weak var homeMap: MKMapView!
     
     @IBOutlet weak var WeatherStackView: UIStackView!
     @IBOutlet weak var TitleBar: UINavigationItem!
+    
+    let locationManager = CLLocationManager()
     
     var dataSession = WeatherData()
     var currentLocation = CurrentLocation()
@@ -38,6 +44,18 @@ class ViewController: UIViewController {
         
         let seperate = currentLocation.cityState!.split(separator: ",")
         TitleBar.title = (seperate[1].contains("USA") || seperate[1].contains("United States of America")) ? seperate[0] + ", USA" : currentLocation.cityState!
+        
+        // Ask for Authorisation from the User.
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
     }
     
     func fetchCurrentLocation(){
@@ -72,6 +90,14 @@ class ViewController: UIViewController {
         catch {
             print("catch block for MeasurementSystem coreData fetchRequest ViewController")
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        let location = locations.last! as CLLocation
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        self.homeMap.setRegion(region, animated: true)
     }
     
     @IBAction func SystemToggleButton(_ sender: Any) {
