@@ -27,9 +27,6 @@
                                         <state key="normal" title="Map Button">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <segue destination="f0S-Eh-A2u" kind="show" id="CLD-AL-KVe"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -159,6 +156,15 @@
                                     <constraint firstAttribute="height" constant="128" id="LEX-jh-IS5"/>
                                 </constraints>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FyL-ZV-HuZ">
+                                <rect key="frame" x="67" y="474" width="238" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="uyf-TG-TEa"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="f0S-Eh-A2u" kind="show" id="gbA-m5-LHm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -169,10 +175,12 @@
                             <constraint firstItem="My6-7i-sXw" firstAttribute="width" secondItem="My6-7i-sXw" secondAttribute="height" multiplier="30:31" id="8Yz-10-Gci"/>
                             <constraint firstItem="b4Y-jZ-Y13" firstAttribute="top" secondItem="IDK-4u-aba" secondAttribute="bottom" constant="30" id="D7Y-Gb-M6Y"/>
                             <constraint firstItem="spR-WE-Ngt" firstAttribute="bottom" secondItem="UHV-YB-u8w" secondAttribute="bottom" id="MyP-7d-EWC"/>
+                            <constraint firstItem="FyL-ZV-HuZ" firstAttribute="leading" secondItem="UHV-YB-u8w" secondAttribute="leading" constant="67" id="Pzy-2A-QpG"/>
                             <constraint firstItem="zEB-lv-Bbb" firstAttribute="leading" secondItem="UHV-YB-u8w" secondAttribute="leading" constant="70" id="Xxm-rp-GRZ"/>
                             <constraint firstItem="b4Y-jZ-Y13" firstAttribute="leading" secondItem="IDK-4u-aba" secondAttribute="leading" id="Zsf-bP-ezu"/>
                             <constraint firstItem="Eh3-zL-Tpl" firstAttribute="top" secondItem="UHV-YB-u8w" secondAttribute="top" id="Zv6-iD-RzK"/>
                             <constraint firstItem="spR-WE-Ngt" firstAttribute="top" secondItem="b4Y-jZ-Y13" secondAttribute="bottom" constant="21" id="cTf-IL-Uw9"/>
+                            <constraint firstItem="UHV-YB-u8w" firstAttribute="trailing" secondItem="FyL-ZV-HuZ" secondAttribute="trailing" constant="70" id="hYL-XU-YpN"/>
                             <constraint firstItem="UHV-YB-u8w" firstAttribute="trailing" secondItem="zEB-lv-Bbb" secondAttribute="trailing" constant="70" id="ldu-5d-m0v"/>
                             <constraint firstItem="XZQ-MI-mNZ" firstAttribute="top" secondItem="zEB-lv-Bbb" secondAttribute="bottom" constant="105" id="or4-za-inX"/>
                             <constraint firstItem="XZQ-MI-mNZ" firstAttribute="leading" secondItem="My6-7i-sXw" secondAttribute="trailing" constant="40" id="pso-Cy-w3P"/>
@@ -182,6 +190,7 @@
                             <constraint firstItem="zEB-lv-Bbb" firstAttribute="top" secondItem="UHV-YB-u8w" secondAttribute="top" constant="105" id="uuz-oi-A36"/>
                             <constraint firstItem="spR-WE-Ngt" firstAttribute="leading" secondItem="BKY-MK-cE4" secondAttribute="leading" id="x7A-RK-3dB"/>
                             <constraint firstItem="My6-7i-sXw" firstAttribute="top" secondItem="KVU-Cn-UiG" secondAttribute="bottom" constant="77" id="yNU-5p-kyE"/>
+                            <constraint firstItem="spR-WE-Ngt" firstAttribute="top" secondItem="FyL-ZV-HuZ" secondAttribute="bottom" constant="21" id="zsc-Eo-5VJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UHV-YB-u8w"/>
                     </view>

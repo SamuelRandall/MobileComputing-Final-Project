@@ -26,6 +26,7 @@
 		F3C095B622739C840076493B /* PersistanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C095B522739C840076493B /* PersistanceService.swift */; };
 		F3C54A032277D83A009D9BC6 /* HourlyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C54A022277D83A009D9BC6 /* HourlyVC.swift */; };
 		F3C54A052277EA20009D9BC6 /* Hour.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C54A042277EA20009D9BC6 /* Hour.swift */; };
+		F3EC73462280A555008705C2 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EC73452280A555008705C2 /* Place.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		F3C095B522739C840076493B /* PersistanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceService.swift; sourceTree = "<group>"; };
 		F3C54A022277D83A009D9BC6 /* HourlyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyVC.swift; sourceTree = "<group>"; };
 		F3C54A042277EA20009D9BC6 /* Hour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hour.swift; sourceTree = "<group>"; };
+		F3EC73452280A555008705C2 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 		F35880F42277812C00D6B760 /* CustomClasses */ = {
 			isa = PBXGroup;
 			children = (
+				F3EC73452280A555008705C2 /* Place.swift */,
 				F3C095B3227397460076493B /* WeatherData.swift */,
 				F3C54A042277EA20009D9BC6 /* Hour.swift */,
 				F3B2B95222790FF70036D630 /* HourlyCell.swift */,
@@ -210,6 +213,7 @@
 				F3C095B622739C840076493B /* PersistanceService.swift in Sources */,
 				F31BB7DB2273C52800486105 /* CurrentLocation+CoreDataProperties.swift in Sources */,
 				F3C095B4227397460076493B /* WeatherData.swift in Sources */,
+				F3EC73462280A555008705C2 /* Place.swift in Sources */,
 				F3C095B2227397100076493B /* AddLocationVC.swift in Sources */,
 				F3C0959D22738B380076493B /* AppDelegate.swift in Sources */,
 				F3694DAC227CBDEB008358D2 /* MeasurementSystem+CoreDataProperties.swift in Sources */,

@@ -154,6 +154,7 @@ extension MapViewController: nameWeatherDataProtocol{
                 location.cityState = city
                 PersistanceService.saveContext()
                 self.locations.append(location)
+                self.viewDidLoad()
             }
         }else{
             DispatchQueue.main.async() {
