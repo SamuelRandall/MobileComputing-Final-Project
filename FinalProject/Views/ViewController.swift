@@ -198,8 +198,8 @@ extension ViewController: nameWeatherDataProtocol {
             
             if let imageData = try? Data(contentsOf: URL(string: Image)!) {
                 self.WImage.image = UIImage(data: imageData)
-//                let number = self.getPicCode(url:Image)
-//                self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background_" + number)
+                let number = self.getPicCode(url:Image)
+                self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background_" + number)!)
 //                self.WImage.image = UIImage(named: "icon_" + number)
             }
             
