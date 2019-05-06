@@ -11,11 +11,12 @@ import CoreLocation
 import CoreData
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var Map: MKMapView!
     
-    var currentLocation = CurrentLocation()
+    var currentLocation = MKPointAnnotation()
+    let locationManager = CLLocationManager()
     var locations = [Location]()
     
     var dataSession = WeatherData()
@@ -27,8 +28,19 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         self.dataSession.delegate = self
         fetchLocations()
-        fetchCurrentLocation()
         addMapPins()
+        
+        // Ask for Authorisation from the User.
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -72,21 +84,16 @@ class MapViewController: UIViewController {
         }
     }
     
-    func fetchCurrentLocation(){
-        let fetchCurrentLocation: NSFetchRequest<CurrentLocation> = CurrentLocation.fetchRequest()
-        do {
-            let curr = try PersistanceService.context.fetch(fetchCurrentLocation)
-            if (curr.count == 0){
-                print("ERROR no currentLocation found")
-            }else {
-                self.currentLocation = curr[0]
-            }
-        }
-        catch {
-            print("catch block for CurrentLocation coreData fetchRequest ViewController")
-        }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        let location = locations.last! as CLLocation
+//        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+//        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        currentLocation.title = "Current"
+        currentLocation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        self.Map.addAnnotation(currentLocation)
+//        self.Map.setRegion(region, animated: true)
     }
-    
     //MARK: - Annotations
     
     func addMapPins() {

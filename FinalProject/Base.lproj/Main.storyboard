@@ -78,9 +78,8 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IDK-4u-aba">
-                                <rect key="frame" x="68" y="333" width="212.5" height="110.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IDK-4u-aba">
+                                <rect key="frame" x="67.5" y="333.5" width="212.5" height="110.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="8SR-EG-D7e">
                                         <rect key="frame" x="0.0" y="0.0" width="99" height="110.5"/>
@@ -154,15 +153,26 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="b4Y-jZ-Y13">
+                                <rect key="frame" x="67.5" y="474" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="LEX-jh-IS5"/>
+                                </constraints>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="UHV-YB-u8w" firstAttribute="trailing" secondItem="XZQ-MI-mNZ" secondAttribute="trailing" constant="94" id="0MO-34-hQp"/>
+                            <constraint firstItem="b4Y-jZ-Y13" firstAttribute="leading" secondItem="UHV-YB-u8w" secondAttribute="leading" constant="67.5" id="1hc-3d-KeJ"/>
+                            <constraint firstItem="UHV-YB-u8w" firstAttribute="trailing" secondItem="b4Y-jZ-Y13" secondAttribute="trailing" constant="67.5" id="6Pc-NX-nou"/>
                             <constraint firstItem="UHV-YB-u8w" firstAttribute="trailing" secondItem="Eh3-zL-Tpl" secondAttribute="trailing" constant="1" id="7jD-E8-5hu"/>
                             <constraint firstItem="My6-7i-sXw" firstAttribute="width" secondItem="My6-7i-sXw" secondAttribute="height" multiplier="30:31" id="8Yz-10-Gci"/>
+                            <constraint firstItem="b4Y-jZ-Y13" firstAttribute="top" secondItem="IDK-4u-aba" secondAttribute="bottom" constant="30" id="D7Y-Gb-M6Y"/>
                             <constraint firstItem="spR-WE-Ngt" firstAttribute="bottom" secondItem="UHV-YB-u8w" secondAttribute="bottom" id="MyP-7d-EWC"/>
                             <constraint firstItem="zEB-lv-Bbb" firstAttribute="leading" secondItem="UHV-YB-u8w" secondAttribute="leading" constant="70" id="Xxm-rp-GRZ"/>
+                            <constraint firstItem="b4Y-jZ-Y13" firstAttribute="leading" secondItem="IDK-4u-aba" secondAttribute="leading" id="Zsf-bP-ezu"/>
                             <constraint firstItem="Eh3-zL-Tpl" firstAttribute="top" secondItem="UHV-YB-u8w" secondAttribute="top" id="Zv6-iD-RzK"/>
+                            <constraint firstItem="spR-WE-Ngt" firstAttribute="top" secondItem="b4Y-jZ-Y13" secondAttribute="bottom" constant="21" id="cTf-IL-Uw9"/>
                             <constraint firstItem="UHV-YB-u8w" firstAttribute="trailing" secondItem="zEB-lv-Bbb" secondAttribute="trailing" constant="70" id="ldu-5d-m0v"/>
                             <constraint firstItem="XZQ-MI-mNZ" firstAttribute="top" secondItem="zEB-lv-Bbb" secondAttribute="bottom" constant="105" id="or4-za-inX"/>
                             <constraint firstItem="XZQ-MI-mNZ" firstAttribute="leading" secondItem="My6-7i-sXw" secondAttribute="trailing" constant="40" id="pso-Cy-w3P"/>
@@ -180,6 +190,7 @@
                         <outlet property="WImage" destination="My6-7i-sXw" id="rVT-rH-Wof"/>
                         <outlet property="WeatherStackView" destination="IDK-4u-aba" id="WVN-s1-lHC"/>
                         <outlet property="clouds" destination="qiT-lD-kyl" id="2XV-3y-qzC"/>
+                        <outlet property="homeMap" destination="b4Y-jZ-Y13" id="o9f-Ba-QFv"/>
                         <outlet property="humidity" destination="hul-hx-mFz" id="4jD-uR-aF4"/>
                         <outlet property="pressure" destination="O2p-s8-lpg" id="Yao-c2-ITa"/>
                         <outlet property="rain" destination="VRn-KJ-uPY" id="UrS-Kj-6ci"/>
